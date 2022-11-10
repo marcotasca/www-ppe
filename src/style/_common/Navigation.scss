@@ -1,0 +1,22 @@
+
+.Navigation {
+
+  .Contact {
+    background-color: #1273EB;
+    text-align: center;
+
+    * {color: white;}
+    .contactInfo {margin: 0 8px;}
+    .container, #goToContacts {
+      padding: 10px;
+      display: inline-block;
+      text-decoration: none;
+    }
+  }
+
+  .navbar {
+    background-color: white;
+    padding: 20px;
+  }
+
+}
