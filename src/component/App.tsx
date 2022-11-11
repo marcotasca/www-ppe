@@ -5,8 +5,11 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Navigation from "./menu/Navigation";
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Home from "./home/Home";
-import Contact from "./contact/Contact";
+import Home from "./pages/home/Home";
+import Contact from "./pages/contact/Contact";
+import Quote from "./pages/quote/Quote";
+import Service from "./pages/service/Service";
+import About from "./pages/about/About";
 
 function App() {
     const navigationContacts = [
@@ -16,12 +19,15 @@ function App() {
     ]
 
     return (
-        <div className="App">
+        <div className="App" onScroll={event => console.log(event)}>
             <BrowserRouter>
                 <Navigation contacts={navigationContacts}/>
                 <Routes>
                     <Route path='/' element={<Home />}/>
                     <Route path='/contatti' element={<Contact />}/>
+                    <Route path='/richiedi-preventivo' element={<Quote />}/>
+                    <Route path='/servizi' element={<Service />}/>
+                    <Route path='/chi-siamo' element={<About />}/>
                 </Routes>
             </BrowserRouter>
         </div>

@@ -1,4 +1,4 @@
-export interface NavigationContacts {
+export interface NavigationContactInterface {
     id: number,
     type: string,
     icon: string,
