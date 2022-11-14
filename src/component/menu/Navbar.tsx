@@ -1,9 +1,9 @@
-import Navigation from "./Navigation";
 import {useEffect, useState} from "react";
 import {Link, NavLink} from "react-router-dom";
 
 function Navbar() {
     const [stickyClass, setStickyClass] = useState('');
+    const [menuButtonOpenClass, setMenuButtonOpenClass] = useState('')
 
     useEffect(() => {
         window.addEventListener('scroll', stickNavbar);
@@ -13,9 +13,31 @@ function Navbar() {
     const stickNavbar = () => {
         if (window !== undefined) {
             let windowHeight = window.scrollY;
-            // window height changed for the demo
-            windowHeight > 50 ? setStickyClass('fixed-top') : setStickyClass('');
+            let windowWidth = window.innerWidth;
+            windowHeight > 50 && windowWidth >= 992 ? setStickyClass('fixed-top') : setStickyClass('');
         }
+    };
+
+    useEffect(() => {
+        let buttons = document.getElementsByClassName('nav-link');
+        if(buttons != null) {
+            Array.from(buttons).forEach(function (element) {
+                element.addEventListener('click', navbarMenuButton);
+            })
+        }
+        return () => {
+            let buttons = document.getElementsByClassName('nav-link');
+            if(buttons != null) {
+                Array.from(buttons).forEach(function (element) {
+                    element.removeEventListener('click', navbarMenuButton);
+                })
+            }
+        }
+    }, []);
+
+    const navbarMenuButton = () => {
+        let button = document.getElementById('navbar-menu-button');
+        button?.click();
     };
 
     return (
@@ -28,7 +50,7 @@ function Navbar() {
                 </Link>
 
                 {/* Bottone per aprire il menu */}
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                <button id='navbar-menu-button' className={`navbar-toggler ${menuButtonOpenClass}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
