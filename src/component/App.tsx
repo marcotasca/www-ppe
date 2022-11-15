@@ -10,24 +10,31 @@ import Contact from "./pages/contact/Contact";
 import Quote from "./pages/quote/Quote";
 import Service from "./pages/service/Service";
 import About from "./pages/about/About";
+import {RoutePathEnum} from "../enum/RoutePathEnum";
 
 function App() {
     const navigationContacts = [
         {id: 1, type: 'email', icon: 'bi bi-envelope', value: 'info@pandolfoepianoexpress.it'},
         {id: 2, type: 'phone', icon: 'bi bi-telephone-forward', value: '3356024293', info: 'Tiziano'},
         {id: 3, type: 'phone', icon: 'bi bi-telephone-forward', value: '3460903094', info: 'Adriano'}
+    ];
+
+    const navigationItems = [
+        {id: 1, path: RoutePathEnum.Home, displayName: 'Home', element: <Home />},
+        {id: 2, path: RoutePathEnum.About, displayName: 'Chi siamo', element: <About />},
+        {id: 3, path: RoutePathEnum.Service, displayName: 'Servizi', element: <Service />},
+        {id: 4, path: RoutePathEnum.Contact, displayName: 'Contatti', element: <Contact />},
+        {id: 5, path: RoutePathEnum.Quote, displayName: 'Richiedi preventivo', element: <Quote />, uiID: 'requestQuote', uiClass: 'btn btn-light'},
     ]
 
     return (
-        <div className="App" onScroll={event => console.log(event)}>
+        <div className="App">
             <BrowserRouter>
-                <Navigation contacts={navigationContacts}/>
+                <Navigation contacts={navigationContacts} navbarItems={navigationItems}/>
                 <Routes>
-                    <Route path='/' element={<Home />}/>
-                    <Route path='/contatti' element={<Contact />}/>
-                    <Route path='/richiedi-preventivo' element={<Quote />}/>
-                    <Route path='/servizi' element={<Service />}/>
-                    <Route path='/chi-siamo' element={<About />}/>
+                    {navigationItems.map((item) =>
+                        <Route key={item.id} path={item.path} element={item.element}/>
+                    )}
                 </Routes>
             </BrowserRouter>
         </div>

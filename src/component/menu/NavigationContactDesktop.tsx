@@ -2,12 +2,10 @@ import {NavigationContactInterface} from "../../interface/NavigationContactInter
 
 function NavigationContactDesktopItem(props : {contact : NavigationContactInterface}) {
     const contact = props.contact;
-    let spanInfo;
-    if(contact.info) {spanInfo = <span className='contactInfo'>{contact.info}</span>}
     return (
         <div className="col contactItem">
             <i className={contact.icon}/>
-            {spanInfo}
+            {contact.info && <span className='contactInfo'>{contact.info}</span>}
             <a href={`${contact.type === 'email' ? 'mailto' : 'tel'}:${contact.value}`}>{contact.value}</a>
         </div>
     );

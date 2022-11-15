@@ -1,0 +1,11 @@
+
+.carousel-inner {
+  max-height: 500px;
+  *{color: black}
+  img {
+    top: -50px !important;
+  }
+  .carousel-caption {
+    position: sticky;
+  }
+}

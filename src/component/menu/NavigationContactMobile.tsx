@@ -1,9 +1,10 @@
 import {Link} from "react-router-dom";
+import {RoutePathEnum} from "../../enum/RoutePathEnum";
 
 function NavigationContactMobile() {
     return (
-        <Link id='goToContacts' to="/contatti">
-            <span>Scopri subito il tuo preventivo</span>
+        <Link id='goToContacts' to={RoutePathEnum.Contact}>
+            <span>Scopri subito il tuo preventivo!</span>
             <i className="bi bi-arrow-right-short"/>
         </Link>
     );

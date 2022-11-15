@@ -1,9 +1,34 @@
 import {useEffect, useState} from "react";
 import {Link, NavLink} from "react-router-dom";
+import {RoutePathEnum} from "../../enum/RoutePathEnum";
+import {NavigationNavbarItemInterface} from "../../interface/NavigationNavbarItemInterface";
 
-function Navbar() {
+function NavbarItem(props : {path: string, displayName: string, uiID?: string, uiClass?: string}) {
+    const path = props.path;
+    const displayName = props.displayName;
+    const uiID = props.uiID;
+    const uiClass = props.uiClass;
+
+    const onClickNavbarLink = () => {
+        if (window !== undefined) {
+            let windowWidth = window.innerWidth;
+            if(windowWidth < 992) {
+                let button = document.getElementById('navbar-menu-button');
+                button?.click();
+            }
+        }
+    };
+
+    return (
+        <li className="nav-item">
+            <NavLink to={path} className={`nav-link ${uiClass}`} onClick={onClickNavbarLink} id={uiID} aria-current='page'>{displayName}</NavLink>
+        </li>
+    )
+}
+
+function Navbar(props : {navbarItems : NavigationNavbarItemInterface[];}) {
+    const navbarItems = props.navbarItems;
     const [stickyClass, setStickyClass] = useState('');
-    const [menuButtonOpenClass, setMenuButtonOpenClass] = useState('')
 
     useEffect(() => {
         window.addEventListener('scroll', stickNavbar);
@@ -18,64 +43,44 @@ function Navbar() {
         }
     };
 
-    useEffect(() => {
-        let buttons = document.getElementsByClassName('nav-link');
-        if(buttons != null) {
-            Array.from(buttons).forEach(function (element) {
-                element.addEventListener('click', navbarMenuButton);
-            })
-        }
-        return () => {
-            let buttons = document.getElementsByClassName('nav-link');
-            if(buttons != null) {
-                Array.from(buttons).forEach(function (element) {
-                    element.removeEventListener('click', navbarMenuButton);
-                })
-            }
-        }
-    }, []);
-
-    const navbarMenuButton = () => {
-        let button = document.getElementById('navbar-menu-button');
-        button?.click();
-    };
+    const onClickButtonMenu = () => {
+        document.querySelector('.wrapper-menu')?.classList.toggle('open');
+    }
 
     return (
         <nav className={`navbar bg-light navbar-expand-lg ${stickyClass}`}>
             <div className="container-fluid">
 
                 {/* Logo immagine e scritta */}
-                <Link className="navbar-brand" to="/">
-                    Pandolfo<span style={{color:"#ef6c00"}}>e</span>Piano<span style={{color:"#ef6c00"}}>express</span>
+                <Link className="navbar-brand" to={RoutePathEnum.Home}>
+                    <span>Pandolfo</span>
+                    <span className='color'>e</span>
+                    <span>Piano</span>
+                    <span className='color'>Express</span>
                 </Link>
 
-                {/* Bottone per aprire il menu */}
-                <button id='navbar-menu-button' className={`navbar-toggler ${menuButtonOpenClass}`} type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon" />
-                </button>
+                {/* Menu Button */}
+                <div className="wrapper-menu d-flex d-lg-none" onClick={onClickButtonMenu} id='navbar-menu-button' data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <div className="line-menu half start"/>
+                    <div className="line-menu"/>
+                    <div className="line-menu half end"/>
+                </div>
 
-                {/* Menu che si apre per la navbar chiusa */}
+                {/* Menu Item */}
                 <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <NavLink to='/' className='nav-link' aria-current='page'>Home</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to='/chi-siamo' className='nav-link' aria-current='page'>Chi siamo</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to='/servizi' className='nav-link' aria-current='page'>Servizi</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to='/contatti' className='nav-link' aria-current='page'>Contatti</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to='/richiedi-preventivo' id='requestQuote' className='nav-link btn btn-light' aria-current='page'>Richiedi preventivo</NavLink>
-                        </li>
+                        {navbarItems.map((navbarItem) =>
+                            <NavbarItem
+                                key={navbarItem.id}
+                                path={navbarItem.path}
+                                displayName={navbarItem.displayName}
+                                uiID={navbarItem.uiID}
+                                uiClass={navbarItem.uiClass}
+                            />
+                        )}
                     </ul>
                 </div>
+
             </div>
         </nav>
     );

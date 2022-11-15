@@ -3,9 +3,12 @@ import NavigationContact from "./NavigationContact";
 import {NavigationContactInterface} from "../../interface/NavigationContactInterface";
 import Navbar from "./Navbar";
 import {useEffect, useState} from "react";
+import {NavigationNavbarItemInterface} from "../../interface/NavigationNavbarItemInterface";
+import Carousel from "./Carousel";
 
-function Navigation(props: { contacts: NavigationContactInterface[]; }) {
+function Navigation(props: { contacts: NavigationContactInterface[], navbarItems: NavigationNavbarItemInterface[] }) {
     const contacts = props.contacts;
+    const navbarItems = props.navbarItems;
     const [stickyClass, setStickyClass] = useState('');
 
     useEffect(() => {
@@ -20,14 +23,15 @@ function Navigation(props: { contacts: NavigationContactInterface[]; }) {
     const stickNavbar = () => {
         if (window !== undefined) {
             let windowWidth = window.innerWidth;
-            windowWidth < 992 ? setStickyClass('fixed-top') : setStickyClass('');
+            windowWidth < 992 ? setStickyClass('sticky-top') : setStickyClass('');
         }
     };
 
     return (
         <div className={`Navigation ${stickyClass}`}>
             <NavigationContact contacts={contacts}/>
-            <Navbar/>
+            <Navbar navbarItems={navbarItems}/>
+            <Carousel/>
         </div>
     );
 }
